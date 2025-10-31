@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_USER: noteracer
+      POSTGRES_PASSWORD: noteracer
+      POSTGRES_DB: noteracer
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
