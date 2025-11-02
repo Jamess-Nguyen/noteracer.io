@@ -10,7 +10,7 @@ function logIn(){
 }
 
 function GoogleSignIn(){
-  return (<button onClick={logIn} type="button">Sign in</button>);
+  return (<button onClick={logIn} type="button"><b>Sign in w/ Google</b></button>);
 }
 
 export { GoogleSignIn };
