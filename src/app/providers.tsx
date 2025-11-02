@@ -2,13 +2,19 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { SessionProvider } from "next-auth/react";
 
-export function QcProvider({children}: any){
+export function DepedencyProvider({children}: any){
   const [qc] = useState(() => {
     return new QueryClient();
   });
 
-  const qcProvider = <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-  return qcProvider;
+  const DepedencyProvider = (
+    <SessionProvider>
+      <QueryClientProvider client={qc}>
+        {children}
+      </QueryClientProvider>
+    </SessionProvider>
+  );
+  return DepedencyProvider;
 }
-
