@@ -1,9 +1,13 @@
 import { GoogleSignIn } from "./features/auth/GoogleSignIn";
-import { NavBar } from "./components/site/NavBar";
+import { TwoItemNavBar } from "./components/navigation/TwoItemNavBar";
+
 export default function Home() {
   return (
     <>
-      <NavBar rightNav={<GoogleSignIn/>}/>
+      <TwoItemNavBar 
+        leftLogo={"NoteRacer.io"}
+        rightNav={<GoogleSignIn/>}
+      />
     </>
   );
 }
