@@ -1,4 +1,4 @@
-import { GoogleSignIn } from "./features/auth/GoogleSignIn";
+import { GoogleSignIn } from "./components/auth/GoogleSignIn";
 import { TwoItemNavBar } from "./components/navigation/TwoItemNavBar";
 
 export default function Home() {
