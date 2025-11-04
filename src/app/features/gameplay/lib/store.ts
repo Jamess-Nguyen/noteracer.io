@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { GameplayState, CellState, RoundStatus } from "@/app/features/gameplay/lib/types"
+import { GameplayState, CellState } from "@/app/features/gameplay/lib/types"
 
 function makeArray<T>(len: number, value: T): T[] {
   return Array(len).fill(value);
@@ -24,10 +24,10 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
       return { answers };
     }),
 
-  setState: (idx, st) =>
+  setState: (idx, state) =>
     set((s) => {
       const states = s.states.slice();
-      states[idx] = st;
+      states[idx] = state;
       return { states };
     }),
 

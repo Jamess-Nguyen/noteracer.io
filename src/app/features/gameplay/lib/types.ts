@@ -1,5 +1,6 @@
 export type CellState = "neutral" | "wrong" | "right";
 export type RoundStatus = "idle" | "running" | "done";
+
 export type GameplayState = {
   notes: string[];
   answers: string[];
@@ -13,10 +14,7 @@ export type GameplayState = {
   resetRound: (notes: string[]) => void;
 };
 
-export type NoteCellProps = {
-  noteToken: string
-  userInput: string
-  noteState: "neutral" | "wrong" | "right"
-  noteEnabled: boolean
-  ariaLabel: string
+export type NoteCellOwnProps = {
+  index: number;
+  ariaLabel: string;
 };
