@@ -5,18 +5,18 @@ import { useGameplayStore } from "@/app/features/gameplay/lib/store";
 import type { NoteCellOwnProps, CellState } from "@/app/features/gameplay/lib/types";
 
 export function NoteCell({ index, ariaLabel }: NoteCellOwnProps) {
-  const noteToken = useGameplayStore(s => s.notes[index] ?? "");
-  const value = useGameplayStore(s => s.answers[index] ?? "");
-  const state: CellState = useGameplayStore(s => s.states[index]);
-  const currentIndex = useGameplayStore(s => s.currentIndex);
+  const noteToken = useGameplayStore((s) => { return s.notes[index] });
+  const value = useGameplayStore((s) => { return s.answers[index] });
+  const state: CellState = useGameplayStore((s) => { return s.states[index] });
+  const currentIndex = useGameplayStore((s) => { return s.currentIndex });
 
-  const setAnswer = useGameplayStore(s => s.setAnswer);
-  const setState = useGameplayStore(s => s.setState);
-  const advanceInput = useGameplayStore(s => s.advanceInput);
+  const setAnswer = useGameplayStore((s) => { return s.setAnswer });
+  const setState = useGameplayStore((s) => { return s.setState });
+  const advanceInput = useGameplayStore((s) => { return s.advanceInput });
 
   const noteEnabled = index === currentIndex;
 
-  const handleChange = (next: string) => {
+  const readNoteInput = (next: string) => {
     setAnswer(index, next);
 
     if (next === ""){
@@ -41,7 +41,7 @@ export function NoteCell({ index, ariaLabel }: NoteCellOwnProps) {
           aria-label={ariaLabel}
           disabled={!noteEnabled}
           value={value}
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => readNoteInput(e.target.value)}
           className="h-full w-full text-center outline-none"
         />
       </div>

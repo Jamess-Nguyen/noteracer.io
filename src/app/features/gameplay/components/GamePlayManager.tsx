@@ -1,14 +1,14 @@
 "use client";
 
-import * as React from "react";
 import { NoteCell } from "./NoteCell";
 import { useGameplayStore } from "@/app/features/gameplay/lib/store";
-import { generateNotes } from "@/app/features/gameplay/lib/notes";
 
 export function GamePlayManager() {
   const resetRound = useGameplayStore((s) => s.resetRound);
-  const bArray = ["b","b","b","b","b","b","b","b","b"];
-  resetRound(bArray);
+  const notes = Array(10).fill("b");
+  resetRound(notes);
+
+
   return (
     <div className="p-4">
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
