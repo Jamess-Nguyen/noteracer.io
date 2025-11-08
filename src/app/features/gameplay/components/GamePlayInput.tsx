@@ -1,11 +1,11 @@
 "use client";
 
 import { useGameplayStore } from "@/app/features/gameplay/lib/store";
-import { GAME_STATUS } from "../constants";
+import type { ChangeEvent } from "react";
 
 export function GamePlayInput(){
   const currentIndex  = useGameplayStore((s) => { return s.currentIndex });
-  const currentNote   = useGameplayStore((s) => { return s.notes[s.currentIndex] });
+  const currentNote   = useGameplayStore((s) => { return s.notes[s.currentIndex] ?? "" });
 
   const currentStatus = useGameplayStore((s) => { return s.status });
 
@@ -13,27 +13,34 @@ export function GamePlayInput(){
   const setState      = useGameplayStore((s) => { return s.setState });
   const advanceInput  = useGameplayStore((s) => { return s.advanceInput });
 
-  function ReadInput(event : any){
-    const cur_input = event.target.value;
-    
-    if (cur_input==currentNote){
-      console.log("CORRECT!")
-      event.currentTarget.value = ""; 
-      setState(currentIndex, "right");
-      setAnswer(currentIndex, cur_input)
-      advanceInput();
-      console.log("after advance:", useGameplayStore.getState().currentIndex);
-      event.currentTarget.value = ""; 
+  function ReadInput(event : ChangeEvent<HTMLInputElement>){
+    const cur_input   = event.currentTarget.value;
+    const cur_length  = event.currentTarget.value.length;
+    const note_length = currentNote.length;
+
+    if (cur_length < note_length){
+      return;
     }
 
-    console.log(currentIndex, currentNote, currentStatus, cur_input);
+    if (cur_input === currentNote){
+      setState(currentIndex, "right");
+      setAnswer(currentIndex, cur_input);
+      advanceInput();
+      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}`);
+    }
+
+    if (cur_input !== currentNote){
+      setState(currentIndex, "wrong");
+      setAnswer(currentIndex, cur_input);
+      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}`);
+    }
+
   }
 
   const gamePlayInput = (
       <input className="bg-white" onChange={(e)=>{return ReadInput(e)}}/>
   );
 
-  return (
-      gamePlayInput
-  );
+  return gamePlayInput;
+
 }

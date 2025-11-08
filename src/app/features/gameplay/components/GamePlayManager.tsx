@@ -5,7 +5,6 @@ import { useGameplayStore } from "@/app/features/gameplay/lib/store";
 import { GamePlayInput } from "./GamePlayInput";
 import { useEffect } from "react";
 export function GamePlayManager() {
-
   const resetRound = useGameplayStore((s) => { return s.resetRound });
   useEffect(()=>{
     return resetRound(Array(10).fill("b"));
