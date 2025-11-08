@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { GameplayState, CellState } from "@/app/features/gameplay/lib/types"
+import { RoundStatus } from "@/app/features/gameplay/lib/types";
 
 function makeArray<T>(len: number, value: T): T[] {
   return Array(len).fill(value);
@@ -33,11 +34,9 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
 
   advanceInput: () =>
     set((s) => {
-      const next = Math.min(s.currentIndex + 1, 9);
-      const done = next === 9 && s.states[9] === "right";
+      const increment_index = s.currentIndex + 1;
       return {
-        currentIndex: done ? 9 : next,
-        status: done ? "done" : s.status,
+        currentIndex: increment_index
       };
     }),
 

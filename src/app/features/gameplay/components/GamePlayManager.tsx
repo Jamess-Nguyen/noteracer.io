@@ -3,17 +3,13 @@
 import { NoteCell } from "./NoteCell";
 import { useGameplayStore } from "@/app/features/gameplay/lib/store";
 import { GamePlayInput } from "./GamePlayInput";
-
+import { useEffect } from "react";
 export function GamePlayManager() {
-  const currentIndex = useGameplayStore((s) => { return s.currentIndex });
-  const setAnswer = useGameplayStore((s) => { return s.setAnswer });
-  const setState = useGameplayStore((s) => { return s.setState });
-  const advanceInput = useGameplayStore((s) => { return s.advanceInput });
+
   const resetRound = useGameplayStore((s) => { return s.resetRound });
-
-
-  const notes = Array(10).fill("b");
-  resetRound(notes);
+  useEffect(()=>{
+    return resetRound(Array(10).fill("b"));
+  },[]);
 
   const sampleNotes = (
     <div className="p-4">
