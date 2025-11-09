@@ -1,6 +1,8 @@
 import { GoogleSignIn } from "./components/auth/GoogleSignIn";
 import { TwoItemNavBar } from "./components/navigation/TwoItemNavBar";
 import { GamePlayManager } from "./features/gameplay/components/GamePlayManager";
+import { PostUserButton } from "./components/postuser";
+
 export default function Home() {
   return (
     <>
@@ -11,6 +13,7 @@ export default function Home() {
       <div className="mx-auto max-w-screen-lg px-6">
         <GamePlayManager/>
       </div>
+      <PostUserButton/>
     </>
   );
 }
