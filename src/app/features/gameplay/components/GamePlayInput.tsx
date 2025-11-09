@@ -20,22 +20,25 @@ export function GamePlayInput(){
 
     if (cur_length < note_length){
       return;
-    }
-
+    };
+    
+    // This probably shouldn't handle advancing indexes
     if (cur_input === currentNote){
       setState(currentIndex, "right");
       setAnswer(currentIndex, cur_input);
       advanceInput();
       console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}`);
-    }
+      event.currentTarget.value = "";
+    };
 
     if (cur_input !== currentNote){
       setState(currentIndex, "wrong");
       setAnswer(currentIndex, cur_input);
       console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}`);
-    }
+      event.currentTarget.value = "";
+    };
 
-  }
+  };
 
   const gamePlayInput = (
       <input className="bg-white" onChange={(e)=>{return ReadInput(e)}}/>

@@ -14,6 +14,7 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
   states: makeArray<CellState>(10, "neutral"),
   currentIndex: 0,
   status: "idle",
+  timerMs: 0,
 
   setAnswer: (idx, answer) =>
     set((s) => {
@@ -44,6 +45,8 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
       };
     }),
 
+  setTimer: (time) => set({ timerMs: time }),
+
   resetRound: (notes) =>
     set(() => ({
       notes,
@@ -51,5 +54,6 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
       states: makeArray<CellState>(10, "neutral"),
       currentIndex: 0,
       status: "idle",
+      timerMs: 0,
     })),
 }));
