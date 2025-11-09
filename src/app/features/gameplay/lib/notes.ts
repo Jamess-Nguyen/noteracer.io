@@ -1,13 +1,10 @@
-export function generateNotes(): Array<Number>{
+export function generateNotes(): Array<string>{
   const roundNotes = Array(10);
 
   for (let i=0; i<10; i++){
-    if (i%2==0) {
-      roundNotes[i]="C";
-    }
-    else{
-      roundNotes[i]="D";
-    }
+    const note = (Math.random() < 0.5) ? 'a' : 'b';
+    roundNotes[i] = note;
+
   }
 
   return roundNotes;

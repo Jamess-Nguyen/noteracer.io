@@ -14,14 +14,19 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
   states: makeArray<CellState>(10, "neutral"),
   currentIndex: 0,
   status: "idle",
+  timerMs: 0,
 
   setAnswer: (idx, answer) =>
     set((s) => {
       const answers = s.answers.slice();
       answers[idx] = answer;
-      if (s.status === "idle" && idx === 0 && answer.length > 0) {
+      if (s.status === "idle" && idx === 0) {
         return { answers, status: "running" };
       }
+      if (s.status === "running" && idx === 9) {
+        return { answers, status: "done" };
+      }
+      
       return { answers };
     }),
 
@@ -32,13 +37,15 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
       return { states };
     }),
 
-  advanceInput: () =>
+  advanceInput: () => 
     set((s) => {
       const increment_index = s.currentIndex + 1;
       return {
         currentIndex: increment_index
       };
     }),
+
+  setTimer: (time) => set({ timerMs: time }),
 
   resetRound: (notes) =>
     set(() => ({
@@ -47,5 +54,6 @@ export const useGameplayStore = create<GameplayState>((set, get) => ({
       states: makeArray<CellState>(10, "neutral"),
       currentIndex: 0,
       status: "idle",
+      timerMs: 0,
     })),
 }));
