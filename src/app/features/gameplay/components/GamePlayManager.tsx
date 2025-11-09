@@ -6,6 +6,7 @@ import { GamePlayInput } from "./GamePlayInput";
 import { useEffect } from "react";
 import { generateNotes } from "../lib/notes";
 import { GamePlayHeader } from "./GamePlayHeader";
+
 export function GamePlayManager() {
   const resetRound = useGameplayStore((s) => { return s.resetRound });
   useEffect(() => {

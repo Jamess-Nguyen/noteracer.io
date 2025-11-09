@@ -11,9 +11,9 @@ export function GamePlayHeader() {
   const rawName    = (status === "authenticated" ? data?.user?.name : null) ?? DEFAULT_USERNAME;
   const firstName  = processName(rawName);
 
-  const timerMs    = useGameplayStore(s => s.timerMs);
-  const gameStatus = useGameplayStore(s => s.status);
-  const setTimerMs = useGameplayStore(s => s.setTimer);
+  const timerMs    = useGameplayStore(s => { return s.timerMs });
+  const gameStatus = useGameplayStore(s => { return s.status });
+  const setTimerMs = useGameplayStore(s => { return s.setTimer });
 
   useEffect(() => {
     if (gameStatus !== "running") return;
