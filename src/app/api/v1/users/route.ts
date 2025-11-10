@@ -18,9 +18,14 @@ export async function POST(req: Request) {
     update: { name: name ?? undefined, image: image ?? undefined },
     create: { email, name: name ?? null, image: image ?? null },
   });
+  
+
+  const header = {
+    "content-type": "application/json"
+  }
 
   return new Response(JSON.stringify(user), {
     status: 201,
-    headers: { "content-type": "application/json" },
+    headers: header,
   });
 }
