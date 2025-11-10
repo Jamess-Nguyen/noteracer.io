@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { SessionProvider } from "next-auth/react";
+import { UpsertOnLogin } from "./components/auth/UpsertOnLogin";
 
 export function DepedencyProvider({children}: any){
   const [qc] = useState(() => {
@@ -12,6 +13,7 @@ export function DepedencyProvider({children}: any){
   const DepedencyProvider = (
     <SessionProvider>
       <QueryClientProvider client={qc}>
+        <UpsertOnLogin/>
         {children}
       </QueryClientProvider>
     </SessionProvider>
