@@ -6,8 +6,12 @@ function UpsertOnLogin() {
   const { status } = useSession();
   useEffect(() => {
     if (status === "authenticated") {
-      fetch("/api/v1/users", { method: "POST" }).catch(console.error);
-      console.log("Upserted User")
+      try{
+        fetch("/api/v1/users", { method: "POST" });
+      }
+      catch(error){
+        console.log(error);
+      }
     }
   }, [status]);
   return null;
