@@ -4,7 +4,8 @@ import { useSession, signIn, SignInOptions, signOut, SignOutParams } from "next-
 
 function logIn(){
   const signInOptions: SignInOptions = {
-    callbackUrl: "/"
+    callbackUrl: "/",
+    prompt: "select_account",
   };
 
   signIn("google", signInOptions);
