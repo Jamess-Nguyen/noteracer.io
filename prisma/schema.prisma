@@ -15,6 +15,8 @@ model User {
   emailVerified DateTime?
 
   accounts      Account[]
+  runs          Run[] 
+
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -37,4 +39,18 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Run {
+  id        String    @id @default(uuid())
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  notes     String[]  @db.Text
+  runTimeMs Int
+  date      DateTime  @default(now())
+
+  createdAt DateTime  @default(now())
+  
+  @@index([userId, date(sort: Desc)])
 }
