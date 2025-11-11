@@ -9,13 +9,9 @@ import { GamePlayHeader } from "./GamePlayHeader";
 import { useRunStore } from "@/app/features/runs/lib/store";
 import { run } from "@/app/features/runs/lib/types"
 import { useSession } from "next-auth/react";
+import { useQueryClient } from "@tanstack/react-query";
 
-type BooleanRef = { current: boolean }; 
-
-async function submitCompletedRun(
-  completed_run: run,
-  postedRef: BooleanRef
-) {
+async function submitServerCompletedRun(completed_run: run, qc: any ) {
   try {
     const res = await fetch("/api/v1/runs", {
       method: "POST",
@@ -33,16 +29,18 @@ async function submitCompletedRun(
     }
 
     const { runHistory } = useRunStore.getState();
+    await qc.invalidateQueries({ queryKey: ["runs"] }); 
     console.log(runHistory);
-  } catch (err) {
-    console.error("POST RUN ERROR:", err);
+  } 
+  catch (error) {
+    console.error("POST RUN ERROR:", error);
   }
 }
 
 export function GamePlayManager() {
   const addRun = useRunStore((s) => { return s.addRun });  
   const resetRound = useGameplayStore((s) => { return s.resetRound });
-
+  const qc = useQueryClient();  
   useEffect(() => {
     const run_notes = generateNotes();
     resetRound(run_notes);
@@ -53,7 +51,7 @@ export function GamePlayManager() {
   const { status, data } = useSession();
   const email = data?.user?.email ?? null;
   const isAuthed = (status === "authenticated") && (email !== null);
-
+  
   useEffect(() => {
     if (gameStatus !== "done") { return; }
     if (postedRef.current === true) { return; }
@@ -68,11 +66,12 @@ export function GamePlayManager() {
     };
 
     if (isAuthed === true){
-      submitCompletedRun(completed_run, postedRef);
+      submitServerCompletedRun(completed_run, qc);
     }
     else{
       addRun(completed_run);
     }
+    
     const run_notes = generateNotes();
     resetRound(run_notes);
     postedRef.current = false;

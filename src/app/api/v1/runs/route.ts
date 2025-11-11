@@ -9,6 +9,38 @@ const RunInput = z.object({
   runTime: z.number().int().nonnegative(),
 });
 
+export async function GET(req: Request) {
+  const session = await auth();
+  const userEmail = session?.user?.email ?? "";
+
+  if (userEmail === "") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: userEmail },
+    select: { id: true },
+  });
+
+  if (user === null) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const runs = await prisma.run.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      notes: true,
+      runTimeMs: true,
+      date: true,
+      createdAt: true,
+    },
+  });
+
+  return NextResponse.json(runs, { status: 200 });
+}
+
 export async function POST(req: Request) {
   const session = await auth();
   const userEmail = session?.user?.email ?? "";

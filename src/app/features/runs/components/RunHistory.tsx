@@ -5,8 +5,24 @@ import { run } from "@/app/features/runs/lib/types";
 import { RunCard } from "@/app/features/runs/components/RunCard";
 import { useRunStore } from "@/app/features/runs/lib/store";
 import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
 
 const PAGE_SIZE = 3;
+
+async function fetchAuthRunHistory(): Promise<run[]> {
+  const res = await fetch("/api/v1/runs", { method: "GET" });
+  if (res.ok === false) {
+    throw new Error(await res.text());
+  }
+  const rows: Array<{ notes: string[]; runTimeMs: number; date: string }> = await res.json();
+  const mapped: run[] = rows.map((r) => ({
+    notes: r.notes,
+    runTime: r.runTimeMs,
+    date: new Date(r.date),
+  }));
+  mapped.sort((a, b) => b.date.getTime() - a.date.getTime());
+  return mapped;
+}
 
 function fetchGuestRunHistory() {
   return useRunStore((s) => { return s.runHistory; });
@@ -15,13 +31,20 @@ function fetchGuestRunHistory() {
 function RunHistory(){
   const { status } = useSession();
   const isAuthed = (status === "authenticated");
+  const guestRuns = fetchGuestRunHistory();
+
+  const { data: serverRunHistory = [], isLoading } = useQuery({
+    queryKey: ["runs"],
+    queryFn: fetchAuthRunHistory,
+    enabled: (isAuthed === true),
+  });
 
   let allRuns = [] as run[] | [];
   if (isAuthed === true){
-    allRuns = fetchGuestRunHistory();
+    allRuns = serverRunHistory;
   }
   else{
-    allRuns = fetchGuestRunHistory();
+    allRuns = guestRuns;
   }
 
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
