@@ -1,7 +1,8 @@
 import { GoogleSignIn } from "./components/auth/GoogleSignIn";
 import { TwoItemNavBar } from "./components/navigation/TwoItemNavBar";
 import { GamePlayManager } from "./features/gameplay/components/GamePlayManager";
-import { RunCard } from "./features/runs/components/RunCard";
+import { RunHistory } from "./features/runs/components/RunHistory";
+
 export default function Home() {
   return (
     <>
@@ -13,22 +14,8 @@ export default function Home() {
         <GamePlayManager/>
       </div>
       <div className="mx-auto max-w-screen-lg px-6">
-      <RunCard 
-        notes={["a", "b", "a", "b","a", "b", "a", "b", "a",  "b", "a"]}
-        date={new Date()}
-        runTime={100}
-      />
-      <RunCard 
-        notes={["a", "b", "a", "b","a", "b", "a", "b", "a",  "b", "a"]}
-        date={new Date()}
-        runTime={100}
-      />
-      <RunCard 
-        notes={["a", "b", "a", "b","a", "b", "a", "b", "a",  "b", "a"]}
-        date={new Date()}
-        runTime={100}
-      />
+        <RunHistory/>
       </div>
-     </>
+    </>
   );
 }
