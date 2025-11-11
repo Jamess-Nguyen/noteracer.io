@@ -6,18 +6,33 @@ import { GamePlayInput } from "./GamePlayInput";
 import { useEffect } from "react";
 import { generateNotes } from "../lib/notes";
 import { GamePlayHeader } from "./GamePlayHeader";
+import { useRunStore } from "@/app/features/runs/lib/store";
+import { run } from "@/app/features/runs/lib/types"
+
 export function GamePlayManager() {
+  const addRun = useRunStore((s) => { return s.addRun });  
   const resetRound = useGameplayStore((s) => { return s.resetRound });
   useEffect(() => {
-    const notes = generateNotes();
-    resetRound(notes);
+    const run_notes = generateNotes();
+    resetRound(run_notes);
   },[resetRound]);
 
   const gameStatus = useGameplayStore((s) => { return s.status });
   useEffect(() => {
     if (gameStatus === "done") {
-      const notes = generateNotes();
-      resetRound(notes);
+      const {notes, timerMs} = useGameplayStore.getState();
+
+      const completed_run : run = {
+        notes: notes,
+        runTime: timerMs,
+        date: new Date(),
+      };
+      addRun(completed_run);
+      const {runHistory} = useRunStore.getState()
+      console.log(runHistory)
+
+      const run_notes = generateNotes();
+      resetRound(run_notes);
     }
   }), [gameStatus, resetRound];
 
