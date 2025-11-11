@@ -12,7 +12,7 @@ export default function Home() {
       <div className="mx-auto max-w-screen-lg px-6">
         <GamePlayManager/>
       </div>
-      <div className="mx-auto max-w-screen-lg px-6 bg-pink-200">
+      <div className="mx-auto max-w-screen-lg px-6">
       <RunCard 
         notes={["a", "b", "a", "b","a", "b", "a", "b", "a",  "b", "a"]}
         date={new Date()}
