@@ -88,7 +88,7 @@ function RunHistory() {
 
   return (
     <>
-      <b className="flex w-full justify-center mt-15">{(runHistory.length > 0) ? "Run History" : ""}</b>
+      <b className="flex w-full justify-center mt-8">{(runHistory.length > 0) ? "Run History" : ""}</b>
       <div>{runHistory}</div>
       <div ref={sentinelRef} className="h-8" aria-hidden />
       {allRuns && visibleCount < allRuns.length ? (

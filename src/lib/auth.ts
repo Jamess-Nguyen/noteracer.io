@@ -1,18 +1,20 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "./prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  session: { strategy: "jwt" },
   providers: [
     Google({
       clientId: process.env.GOOGLE_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
-      authorization: { params: { prompt: "select_account" } },
+      authorization: { params: { prompt: "select_account", scope: "openid email profile" } },
     }),
   ],
+  session: { strategy: "jwt" },
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
 });
+
+export const runtime = "nodejs";
