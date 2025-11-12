@@ -1,6 +1,5 @@
 # NoteRacer.io
-A “TypeRacer-style” game for learning sight-reading music notes. Built with Next.js (App Router + TypeScript), Zustand (gameplay state), React Query (server state), Prisma + PostgreSQL (DB), and NextAuth (Google) for auth. Deploy-ready on Vercel.
-
+A “TypeRacer-style” game for learning sight-reading music notes.
 Try it now @ NoteRacer.io !
 
 ## Tech Stack
