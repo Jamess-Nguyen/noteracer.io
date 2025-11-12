@@ -22,7 +22,7 @@ function RunCard({ notes, date, runTime }: run) {
   );
 
   const runCard = (
-    <div className="mt-15">
+    <div className="mt-8">
       <article className="grid grid-cols-1 md:grid-cols-[7.5fr_2.5fr] gap-4">
         {runNotes}
         {runTimeStamps}
