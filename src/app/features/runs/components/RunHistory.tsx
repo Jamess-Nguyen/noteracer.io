@@ -28,7 +28,7 @@ function fetchGuestRunHistory() {
   return useRunStore((s) => { return s.runHistory; });
 }
 
-function RunHistory(){
+function RunHistory() {
   const { status } = useSession();
   const isAuthed = (status === "authenticated");
   const guestRuns = fetchGuestRunHistory();
@@ -40,10 +40,10 @@ function RunHistory(){
   });
 
   let allRuns = [] as run[] | [];
-  if (isAuthed === true){
+  if (isAuthed === true) {
     allRuns = serverRunHistory;
   }
-  else{
+  else {
     allRuns = guestRuns;
   }
 
@@ -56,10 +56,10 @@ function RunHistory(){
   );
 
   useEffect(() => {
-    if (sentinelRef.current === null){
+    if (sentinelRef.current === null) {
       return;
     }
-    if (allRuns.length === 0 || visibleCount >= allRuns.length){
+    if (allRuns.length === 0 || visibleCount >= allRuns.length) {
       return;
     }
 
@@ -74,7 +74,7 @@ function RunHistory(){
     return () => io.disconnect();
   }, [visibleCount, allRuns]);
 
-  const runHistory = visibleRuns.map((run, idx) => { 
+  const runHistory = visibleRuns.map((run, idx) => {
     const currentRun = (
       <RunCard
         key={idx}
@@ -88,7 +88,8 @@ function RunHistory(){
 
   return (
     <>
-      {runHistory}
+      <b className="flex w-full justify-center mt-15">{(runHistory.length > 0) ? "Run History" : ""}</b>
+      <div>{runHistory}</div>
       <div ref={sentinelRef} className="h-8" aria-hidden />
       {allRuns && visibleCount < allRuns.length ? (
         <p className="text-center text-sm opacity-60">Loading...</p>

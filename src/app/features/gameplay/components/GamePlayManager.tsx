@@ -90,10 +90,8 @@ export function GamePlayManager() {
   return (
     <div>
       <GamePlayHeader />
-      {currentNotes}
-      <div className="w-full h-[100px] flex items-center justify-center">
-        <GamePlayInput />
-      </div>
+      <div>{currentNotes}</div>
+      <GamePlayInput />
     </div>
   );
 }
