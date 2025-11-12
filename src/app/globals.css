@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAF8F3;
+  --background: #f1e5c4;
   --foreground: #171717;
   --font-sans: 'Roboto Mono', Courier, monospace;
 }

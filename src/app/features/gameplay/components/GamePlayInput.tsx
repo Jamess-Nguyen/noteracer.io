@@ -45,7 +45,7 @@ export function GamePlayInput() {
   );
 
   const tempInput = (
-    <div className="flex flex-col items-center justify-center text-center gap-2 mx-auto mt-15">
+    <div className="flex flex-col items-center justify-center text-center gap-2 mx-auto mt-5">
       <b>Click on the text box and start inputting notes!</b>
       <b>I'll write a better input system once I get more formal music training</b>
       <div className="w-full max-w-sm mt-4">
