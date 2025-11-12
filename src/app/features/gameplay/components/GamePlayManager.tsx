@@ -11,7 +11,7 @@ import { run } from "@/app/features/runs/lib/types"
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 
-async function submitServerCompletedRun(completed_run: run, qc: any ) {
+async function submitServerCompletedRun(completed_run: run, qc: any) {
   try {
     const res = await fetch("/api/v1/runs", {
       method: "POST",
@@ -29,29 +29,29 @@ async function submitServerCompletedRun(completed_run: run, qc: any ) {
     }
 
     const { runHistory } = useRunStore.getState();
-    await qc.invalidateQueries({ queryKey: ["runs"] }); 
+    await qc.invalidateQueries({ queryKey: ["runs"] });
     console.log(runHistory);
-  } 
+  }
   catch (error) {
     console.error("POST RUN ERROR:", error);
   }
 }
 
 export function GamePlayManager() {
-  const addRun = useRunStore((s) => { return s.addRun });  
+  const addRun = useRunStore((s) => { return s.addRun });
   const resetRound = useGameplayStore((s) => { return s.resetRound });
-  const qc = useQueryClient();  
+  const qc = useQueryClient();
   useEffect(() => {
     const run_notes = generateNotes();
     resetRound(run_notes);
-  },[resetRound]);
+  }, [resetRound]);
 
   const gameStatus = useGameplayStore((s) => { return s.status });
   const postedRef = useRef(false);
   const { status, data } = useSession();
   const email = data?.user?.email ?? null;
   const isAuthed = (status === "authenticated") && (email !== null);
-  
+
   useEffect(() => {
     if (gameStatus !== "done") { return; }
     if (postedRef.current === true) { return; }
@@ -65,13 +65,13 @@ export function GamePlayManager() {
       date: new Date(),
     };
 
-    if (isAuthed === true){
+    if (isAuthed === true) {
       submitServerCompletedRun(completed_run, qc);
     }
-    else{
+    else {
       addRun(completed_run);
     }
-    
+
     const run_notes = generateNotes();
     resetRound(run_notes);
     postedRef.current = false;
@@ -89,10 +89,10 @@ export function GamePlayManager() {
 
   return (
     <div>
-      <GamePlayHeader/>
+      <GamePlayHeader />
       {currentNotes}
-      <div className="w-full h-[100px] bg-amber-200 flex items-center justify-center">
-        <GamePlayInput/>
+      <div className="w-full h-[100px] flex items-center justify-center">
+        <GamePlayInput />
       </div>
     </div>
   );
