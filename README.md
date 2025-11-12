@@ -20,8 +20,8 @@ Try it now @ NoteRacer.io !
 - Portable schema via Prisma
 
 ## Env Vars
-DATABASE_URL="postgresql url"
-NEXTAUTH_URL="App URL"
-NEXTAUTH_SECRET=">"
-GOOGLE_ID=""
-GOOGLE_SECRET=""
+- DATABASE_URL="postgresql url"
+- NEXTAUTH_URL="App URL"
+- NEXTAUTH_SECRET=">"
+- GOOGLE_ID=""
+- GOOGLE_SECRET=""
