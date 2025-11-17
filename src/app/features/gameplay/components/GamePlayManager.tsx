@@ -10,6 +10,22 @@ import { useRunStore } from "@/app/features/runs/lib/store";
 import { run } from "@/app/features/runs/lib/types"
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchAuthRunHistory(): Promise<run[]> {
+  const res = await fetch("/api/v1/runs", { method: "GET" });
+  if (res.ok === false) {
+    throw new Error(await res.text());
+  }
+  const rows: Array<{ notes: string[]; runTimeMs: number; date: string }> = await res.json();
+  const mapped: run[] = rows.map((r) => ({
+    notes: r.notes,
+    runTime: r.runTimeMs,
+    date: new Date(r.date),
+  }));
+  mapped.sort((a, b) => b.date.getTime() - a.date.getTime());
+  return mapped;
+}
 
 async function submitServerCompletedRun(completed_run: run, qc: any) {
   try {
@@ -29,7 +45,6 @@ async function submitServerCompletedRun(completed_run: run, qc: any) {
     }
 
     const { runHistory } = useRunStore.getState();
-    await qc.invalidateQueries({ queryKey: ["runs"] });
     console.log(runHistory);
   }
   catch (error) {
@@ -51,6 +66,19 @@ export function GamePlayManager() {
   const { status, data } = useSession();
   const email = data?.user?.email ?? null;
   const isAuthed = (status === "authenticated") && (email !== null);
+  const replaceRunHistory = useRunStore((s) => { return s.replaceRunHistory });
+
+  const { data: serverRunHistory = [], isLoading } = useQuery({
+    queryKey: ["runs"],
+    queryFn: fetchAuthRunHistory,
+    enabled: (isAuthed === true),
+  });
+
+  useEffect(() => {
+    if (isAuthed && serverRunHistory) {
+      replaceRunHistory(serverRunHistory);
+    }
+  }, [isAuthed, serverRunHistory]);
 
   useEffect(() => {
     if (gameStatus !== "done") { return; }
@@ -67,6 +95,7 @@ export function GamePlayManager() {
 
     if (isAuthed === true) {
       submitServerCompletedRun(completed_run, qc);
+      addRun(completed_run);
     }
     else {
       addRun(completed_run);
