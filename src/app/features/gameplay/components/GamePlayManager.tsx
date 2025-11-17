@@ -95,11 +95,9 @@ export function GamePlayManager() {
 
     if (isAuthed === true) {
       submitServerCompletedRun(completed_run, qc);
-      addRun(completed_run);
     }
-    else {
-      addRun(completed_run);
-    }
+
+    addRun(completed_run);
 
     const run_notes = generateNotes();
     resetRound(run_notes);
