@@ -78,9 +78,14 @@ export function GamePlayManager() {
     if (isAuthed && serverRunHistory) {
       replaceRunHistory(serverRunHistory);
     }
-  }, [isAuthed, serverRunHistory]);
+  }, [isAuthed, serverRunHistory, replaceRunHistory]);
 
+  const nextRoundNotesRef = useRef<string[]>([]);
   useEffect(() => {
+    if (gameStatus === "running" && nextRoundNotesRef.current.length === 0) {
+      nextRoundNotesRef.current = generateNotes();
+    }
+
     if (gameStatus !== "done") { return; }
     if (postedRef.current === true) { return; }
     postedRef.current = true;
@@ -92,17 +97,18 @@ export function GamePlayManager() {
       runTime: timerMs,
       date: new Date(),
     };
-
+    
+    addRun(completed_run);
     if (isAuthed === true) {
       submitServerCompletedRun(completed_run, qc);
     }
 
-    addRun(completed_run);
-
-    const run_notes = generateNotes();
+    const run_notes = (nextRoundNotesRef.current.length > 0) ? nextRoundNotesRef.current : generateNotes();
     resetRound(run_notes);
     postedRef.current = false;
-  }, [gameStatus, resetRound]);
+    nextRoundNotesRef.current = [];
+
+  }, [gameStatus, resetRound, isAuthed, addRun]);
 
   const noteCount = useGameplayStore(s => s.notes.length);
 
