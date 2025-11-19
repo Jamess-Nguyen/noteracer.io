@@ -25,7 +25,7 @@ export function NoteCell({ index, ariaLabel }: NoteCellOwnProps) {
 
   return (
     <div className="relative aspect-square w-full overflow-hidden" aria-label={ariaLabel}>
-      <Image src={notePath} alt={noteToken} fill priority/>
+      <Image src={notePath} alt={noteToken} fill priority sizes="(max-width: 640px) 50vw, 20vw" />
     </div>
   );
 }

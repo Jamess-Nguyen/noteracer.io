@@ -2,6 +2,7 @@
 
 import { useGameplayStore } from "@/app/features/gameplay/lib/store";
 import type { ChangeEvent } from "react";
+import { useEffect } from "react";
 
 export function GamePlayInput() {
   const currentIndex = useGameplayStore((s) => { return s.currentIndex });
@@ -13,9 +14,21 @@ export function GamePlayInput() {
   const setState = useGameplayStore((s) => { return s.setState });
   const advanceInput = useGameplayStore((s) => { return s.advanceInput });
 
-  function ReadInput(event: ChangeEvent<HTMLInputElement>) {
-    const cur_input = event.currentTarget.value;
-    const cur_length = event.currentTarget.value.length;
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      ReadInput(event.key);
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [ReadInput, currentNote]);
+
+  function ReadInput(char: string) {
+    const cur_input = char;
+    const cur_length = cur_input.length;
 
     const expectedNote = currentNote[0];
 
@@ -23,35 +36,26 @@ export function GamePlayInput() {
       return;
     };
 
-    // This probably shouldn't handle advancing indexes
     if (cur_input === expectedNote) {
       setState(currentIndex, "right");
       setAnswer(currentIndex, cur_input);
       advanceInput();
-      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}`);
-      event.currentTarget.value = "";
+      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}, expectedNote: ${expectedNote}`);
     };
 
     if (cur_input !== expectedNote) {
       setState(currentIndex, "wrong");
       setAnswer(currentIndex, cur_input);
-      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}`);
-      event.currentTarget.value = "";
+      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}, expectedNote: ${expectedNote}`);
     };
 
   };
 
-  const gamePlayInput = (
-    <input className="bg-white border-4 border-black" onChange={(e) => { return ReadInput(e) }} />
-  );
-
   const tempInput = (
     <div className="flex flex-col items-center justify-center text-center gap-2 mx-auto mt-5">
-      <b>Click on the text box and start inputting notes!</b>
-      <b>I'll write a better input system once I get more formal music training</b>
-      <div className="w-full max-w-sm mt-4">
-        {gamePlayInput}
-      </div>
+      <b className="w-full max-w-sm mt-4">
+        Press any key to start the game!
+      </b>
     </div>
   )
   return tempInput;
