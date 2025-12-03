@@ -16,18 +16,7 @@ export function TwoItemNavBar({ leftLogo, rightNav }: NavBarProps) {
           </Link>
 
           <div className="flex items-center">
-            <button
-              className="px-3 py-2 text-sm md:hidden"
-              type="button"
-              aria-label={leftLogo}
-            >
-              Menu
-            </button>
-
-            <div className="flex items-center">
-              {rightNav}
-            </div>
-            
+            {rightNav}
           </div>
         </nav>
       </div>

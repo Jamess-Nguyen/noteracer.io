@@ -6,15 +6,16 @@ import { RunHistory } from "./features/runs/components/RunHistory";
 export default function Home() {
   return (
     <>
-      <TwoItemNavBar 
+      <TwoItemNavBar
         leftLogo={"NoteRacer.io"}
-        rightNav={<GoogleSignIn/>}
+        //rightNav={<GoogleSignIn/>}
+        rightNav={<b>Client Mode</b>}
       />
       <div className="mx-auto max-w-screen-lg px-6">
-        <GamePlayManager/>
+        <GamePlayManager />
       </div>
       <div className="mx-auto max-w-screen-lg px-6">
-        <RunHistory/>
+        <RunHistory />
       </div>
     </>
   );
