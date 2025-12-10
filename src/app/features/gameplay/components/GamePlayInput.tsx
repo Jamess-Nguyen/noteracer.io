@@ -1,8 +1,7 @@
 "use client";
 
 import { useGameplayStore } from "@/app/features/gameplay/lib/store";
-import type { ChangeEvent } from "react";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 export function GamePlayInput() {
   const currentIndex = useGameplayStore((s) => { return s.currentIndex });
@@ -14,6 +13,28 @@ export function GamePlayInput() {
   const setState = useGameplayStore((s) => { return s.setState });
   const advanceInput = useGameplayStore((s) => { return s.advanceInput });
 
+  const ReadInput = useCallback((char: string) => {
+    const cur_input = char;
+    const cur_length = cur_input.length;
+
+    const expectedNote = currentNote[0];
+
+    if (cur_length < 1) {
+      return;
+    }
+
+    if (cur_input === expectedNote) {
+      setState(currentIndex, "right");
+      setAnswer(currentIndex, cur_input);
+      advanceInput();
+      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}, expectedNote: ${expectedNote}`);
+    } else if (cur_input !== expectedNote) {
+      setState(currentIndex, "wrong");
+      setAnswer(currentIndex, cur_input);
+      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}, expectedNote: ${expectedNote}`);
+    }
+  }, [currentNote, currentIndex, currentStatus, setState, setAnswer, advanceInput]);
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       ReadInput(event.key);
@@ -24,32 +45,7 @@ export function GamePlayInput() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [ReadInput, currentNote]);
-
-  function ReadInput(char: string) {
-    const cur_input = char;
-    const cur_length = cur_input.length;
-
-    const expectedNote = currentNote[0];
-
-    if (cur_length < 1) {
-      return;
-    };
-
-    if (cur_input === expectedNote) {
-      setState(currentIndex, "right");
-      setAnswer(currentIndex, cur_input);
-      advanceInput();
-      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}, expectedNote: ${expectedNote}`);
-    };
-
-    if (cur_input !== expectedNote) {
-      setState(currentIndex, "wrong");
-      setAnswer(currentIndex, cur_input);
-      console.log(`currentIndex: ${currentIndex}, currentStatus: ${currentStatus}, expectedNote: ${expectedNote}`);
-    };
-
-  };
+  }, [ReadInput]);
 
   const tempInput = (
     <div className="flex flex-col items-center justify-center text-center gap-2 mx-auto mt-5">
